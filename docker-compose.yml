@@ -32,7 +32,9 @@ services:
       - ${NGINX_PORT}:80
     volumes:
       - ./laravel:/var/www/html
-      - ./log:/var/log/nginx
+      - ./log/nginx:/var/log/nginx
+      - ./log/worker:/var/www/html/storage/logs/worker
+
       #      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini # enable this will disable xdebug
     environment:
       DB_HOST: db
