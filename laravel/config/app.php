@@ -134,6 +134,9 @@ return [
     |
     */
 
+    // Data source for the app
+    'data_source' =>  env('DATA_SOURCE', 'api'),
+
     'providers' => [
 
         /*
@@ -173,6 +176,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
