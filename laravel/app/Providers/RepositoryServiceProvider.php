@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Repositories\EnvironmentRepository;
 use App\Repositories\EnvironmentRepositoryInterface;
+use App\Repositories\FilePsiRepository;
+use App\Repositories\FileStationRepository;
 use App\Repositories\LogRepository;
 use App\Repositories\LogRepositoryInterface;
 use App\Repositories\PsiRepository;
@@ -22,16 +24,20 @@ class RepositoryServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->singleton(EnvironmentRepositoryInterface::class, EnvironmentRepository::class);
-        $this->app->singleton(StationRepositoryInterface::class, StationRepository::class);
         $this->app->singleton(LogRepositoryInterface::class, LogRepository::class);
 
-        $this->app->singleton(PsiRepositoryInterface::class, function () {
-            switch (config('app.data_source')) {
-                case 'api':
-                    return new PsiRepository(new LogRepository());
-                default:
-                    throw new \RuntimeException("Unknown data source");
-            }
-        });
+        switch (config('app.data_source')) {
+            case 'api':
+                $this->app->singleton(PsiRepositoryInterface::class, PsiRepository::class);
+                $this->app->singleton(StationRepositoryInterface::class, StationRepository::class);
+                break;
+            case 'file':
+                $this->app->singleton(PsiRepositoryInterface::class, FilePsiRepository::class);
+                $this->app->singleton(StationRepositoryInterface::class, FileStationRepository::class);
+                break;
+            default:
+                throw new \RuntimeException("Unknown data source");
+        }
+
     }
 }
