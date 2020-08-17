@@ -22,7 +22,7 @@ class PsiRepository implements PsiRepositoryInterface
     public function getLatest() {
         $log = $this->logRepository->getLatestSuccess('psi');
 
-        return Psi::where('log_id', $log->id)->first();
+        return Psi::where('log_id', $log->id)->get();
     }
 
 }

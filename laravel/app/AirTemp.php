@@ -8,6 +8,6 @@ class AirTemp extends Model
 {
     public $timestamps = false;
 
-    protected $fillable = ['station_id', 'value', 'log_id'];
+    protected $fillable = ['station_id', 'actual_time', 'value', 'log_id'];
 
 }

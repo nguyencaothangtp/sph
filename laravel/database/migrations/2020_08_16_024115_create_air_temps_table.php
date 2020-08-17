@@ -17,6 +17,7 @@ class CreateAirTempsTable extends Migration
             $table->id();
             $table->string('station_id');
             $table->string('value');
+            $table->dateTime('actual_time')->nullable();
             $table->unsignedBigInteger('log_id');
 
             $table->foreign('station_id')

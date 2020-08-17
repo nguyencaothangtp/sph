@@ -82,6 +82,7 @@ class ProcessAirTemperatureApi implements ShouldQueue
                         'log_id' => $log->id
                     ],
                     [
+                        'actual_time' => date('Y-m-d H:i:s', strtotime($items['timestamp'])),
                         'value' => json_encode($value['value'])
                     ]
                 );
