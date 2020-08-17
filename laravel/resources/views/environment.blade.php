@@ -9,7 +9,7 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
-    <!-- Styles -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/style.css') }}" >
     <style>
         @charset "UTF-8";
 
@@ -21704,6 +21704,8 @@
             }
         }
     </style>
+
+    <!-- Styles -->
 </head>
 <body>
 <!-- if lt IE 10p.browserupgrade You are using an strong outdated browser. Please a(href='http://browsehappy.com/') upgrade your browser to improve your experience.
@@ -21754,47 +21756,7 @@
                                                         <td>S)2 Sub Index</td>
                                                     </tr>
                                                     </thead>
-                                                    <tbody>
-                                                    <tr class="alert">
-                                                        <td>National</td>
-                                                        <td>26</td>
-                                                        <td>17</td>
-                                                        <td>100</td>
-                                                        <td>80</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>North</td>
-                                                        <td>26</td>
-                                                        <td>17</td>
-                                                        <td>100</td>
-                                                        <td>80</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>South</td>
-                                                        <td>26</td>
-                                                        <td>17</td>
-                                                        <td>100</td>
-                                                        <td>80</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>East</td>
-                                                        <td>26</td>
-                                                        <td>17</td>
-                                                        <td>100</td>
-                                                        <td>80</td>
-                                                        <td>15</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>West</td>
-                                                        <td>26</td>
-                                                        <td>17</td>
-                                                        <td>100</td>
-                                                        <td>80</td>
-                                                        <td>15</td>
-                                                    </tr>
+                                                    <tbody id="tbl-body">
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -21809,18 +21771,6 @@
                                                         <ul>
                                                             <li><a class="bold" href="#">Air Temperature</a>
                                                                 <ul class="child-item">
-                                                                    <li><b>Station Name</b>
-                                                                    </li>
-                                                                    <li>Ang Mo Kio Avenue 5
-                                                                    </li>
-                                                                    <li><b>Time Stamp</b>
-                                                                    </li>
-                                                                    <li>2020 06 08 01:02:00
-                                                                    </li>
-                                                                    <li><b>Air Temperature</b>
-                                                                    </li>
-                                                                    <li>30 Degree</a>
-                                                                    </li>
                                                                 </ul>
                                                         </ul>
                                                     </div>
@@ -21862,6 +21812,59 @@
 </div>
 <script src="{{ asset('js/app.js') }}"></script>
 <script src="js/checkout.js"></script>
+<script>
+    $(document).ready(function() {
+        let url = "{{ URL::to('/') }}" + '/api/environment';
+        $.ajax({
+            url: url,
+            contentType: "application/json",
+            dataType: 'json',
+            success: function (result) {
+                let psi = result.psi;
+
+                let rows = '';
+
+                let items = ["national", "east", "west", "north", "south"];
+
+                for (let i = 0; i <= 4; i++) {
+                    if (i === 0) {
+                        rows += '<tr class="alert">';
+                    } else {
+                        rows += '<tr>';
+                    }
+
+                    rows += '<td>' + items[i].charAt(0).toUpperCase() + items[i].slice(1); + '</td>';
+
+                    let value = JSON.parse(psi[i]['value']);
+                    for (let j = 0; j <= 4; j++) {
+                        rows += '<td>' + value[items[j]] + '</td>';
+                    }
+                }
+
+                rows += '</tr>';
+                $('#tbl-body').append(rows);
+
+                // Append Air Temp
+                let airTemp = result.stations;
+                let airTempPanel = airTemp[0];
+
+                let airTempAppend = '<li><b>Station Name</b></li>'
+                    + '<li>' + airTempPanel['name'] + '</li>'
+                    + '<li><b>Time Stamp</b>'
+                    + '<li>' + airTempPanel['latest_air_temps']['actual_time'] + '</li>'
+                    + '<li><b>Air Temperature</b>'
+                    + '<li>' + airTempPanel['latest_air_temps']['value'] + ' Degree</li>'
+
+
+                $('ul.child-item').append(airTempAppend);
+
+            }
+        });
+
+
+
+    });
+</script>
 </body>
 
 </html>
