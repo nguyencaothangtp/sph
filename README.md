@@ -19,12 +19,12 @@
   
 All migrations will run automatically.
 
-The application runs as an HTTP server at port 80. You can go to your `http://localhost` for frontend UI. 
+The application runs as an HTTP server at port 8081 (config in `.env` file with variable `NGINX_PORT`). You can go to your `http://localhost:8081` for frontend UI. 
 For the backend API
 
 ```http
 GET /api/environment HTTP/1.1
-Host: localhost
+Host: localhost:8081
 ```
 
 Backend Staging UI & API endpoint:
